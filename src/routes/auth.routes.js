@@ -39,4 +39,10 @@ router.post(
   auth.Login
 );
 
+router.post("/update-user", auth.updateProfile);
+
+router.get("/get-users", auth.getUsers);
+
+router.get("/get-user", auth.getUserById);
+
 export default router;

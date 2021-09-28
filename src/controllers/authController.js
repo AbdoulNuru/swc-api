@@ -110,4 +110,73 @@ const Login = async (req, res) => {
   }
 };
 
-export default { Signup, Login };
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.query,
+      user = req.body,
+      existingUser = await User.findOne({ where: { id } });
+
+    if (!existingUser) {
+      return res.status(404).json({
+        status: 404,
+        error: "No user found with the given id",
+      });
+    }
+
+    await User.update({ ...user }, { where: { id } });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Profile updated",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const allUsers = await User.findAll();
+
+    return res.status(200).json({
+      status: 200,
+      message: "Users retrieved successfully",
+      data: allUsers,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.query,
+      user = await User.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(404).json({
+        status: 404,
+        error: "No user found with the given id",
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: "User's info retrieved",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+export default { Signup, Login, updateProfile, getUsers, getUserById };
