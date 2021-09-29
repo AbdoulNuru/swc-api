@@ -45,4 +45,6 @@ router.get("/get-users", auth.getUsers);
 
 router.get("/get-user", auth.getUserById);
 
+router.get("/recommended-users", auth.getRecommendations);
+
 export default router;

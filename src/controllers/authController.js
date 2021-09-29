@@ -179,4 +179,46 @@ const getUserById = async (req, res) => {
   }
 };
 
-export default { Signup, Login, updateProfile, getUsers, getUserById };
+const getRecommendations = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const user = await User.findOne({ where: { id } });
+    const recommended = await User.findAll({
+      where: {
+        [Op.not]: [{ id: user.id }],
+        [Op.or]: [
+          {
+            fieldOfExpertise: user.fieldOfExpertise,
+          },
+          {
+            skills: { [Op.contains]: [user.skills] },
+          },
+          {
+            interests: { [Op.contains]: [user.interests] },
+          },
+        ],
+      },
+    });
+
+    return res.status(200).json({
+      status: 200,
+      message: "User recommendations",
+      data: recommended,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      // error: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export default {
+  Signup,
+  Login,
+  updateProfile,
+  getUsers,
+  getUserById,
+  getRecommendations,
+};
