@@ -183,20 +183,11 @@ const getRecommendations = async (req, res) => {
   try {
     const { id } = req.query;
     const user = await User.findOne({ where: { id } });
+    console.log("kkk", user.skills);
     const recommended = await User.findAll({
       where: {
         [Op.not]: [{ id: user.id }],
-        [Op.or]: [
-          {
-            fieldOfExpertise: user.fieldOfExpertise,
-          },
-          {
-            skills: { [Op.contains]: [user.skills] },
-          },
-          {
-            interests: { [Op.contains]: [user.interests] },
-          },
-        ],
+        fieldOfExpertise: user.fieldOfExpertise,
       },
     });
 
