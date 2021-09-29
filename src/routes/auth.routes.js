@@ -47,4 +47,6 @@ router.get("/get-user", auth.getUserById);
 
 router.get("/recommended-users", auth.getRecommendations);
 
+router.get("/get-posts", auth.getPosts);
+
 export default router;

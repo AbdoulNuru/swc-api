@@ -6,6 +6,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.STRING,
       },
+      posterId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+          as: "id",
+        },
+      },
       article: {
         allowNull: true,
         type: Sequelize.STRING,

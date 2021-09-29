@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import Models from "../database/models";
 import { encode } from "../utils/jwtGenerator";
 
-const { User } = Models;
+const { User, Post } = Models;
 
 /**
  *@description this is the function that will be used to create a new user
@@ -183,7 +183,6 @@ const getRecommendations = async (req, res) => {
   try {
     const { id } = req.query;
     const user = await User.findOne({ where: { id } });
-    console.log("kkk", user.skills);
     const recommended = await User.findAll({
       where: {
         [Op.not]: [{ id: user.id }],
@@ -199,8 +198,25 @@ const getRecommendations = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 500,
-      // error: "Internal Server Error",
-      error: error.message,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+const getPosts = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const post = await Post.findAll({ where: { posterId: id } });
+
+    return res.status(200).json({
+      status: 200,
+      message: "Posts retrieved",
+      data: post,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
     });
   }
 };
@@ -212,4 +228,5 @@ export default {
   getUsers,
   getUserById,
   getRecommendations,
+  getPosts,
 };
