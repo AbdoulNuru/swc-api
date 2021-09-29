@@ -203,6 +203,50 @@ const getRecommendations = async (req, res) => {
   }
 };
 
+const createPost = async (req, res) => {
+  try {
+    const {
+      body: { article, posterId },
+      files: { file },
+    } = req;
+
+    if (req.files === null) {
+      return res.status(400).json({
+        status: 400,
+        error: "no file uploaded",
+      });
+    }
+
+    const newPost = await Post.create({
+      id: uuid(),
+      posterId,
+      article,
+      media: file.name,
+    });
+
+    file.mv(
+      `C:/Users/David Edgard/Desktop/local-images/${file.name}`,
+      (err) => {
+        if (err) {
+          // console.error(err);
+          return res.status(500).send(err);
+        }
+      }
+    );
+
+    return res.status(201).json({
+      status: 201,
+      message: "Post created successfully",
+      data: newPost,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
 const getPosts = async (req, res) => {
   try {
     const { id } = req.query;
@@ -229,4 +273,5 @@ export default {
   getUserById,
   getRecommendations,
   getPosts,
+  createPost,
 };

@@ -49,4 +49,6 @@ router.get("/recommended-users", auth.getRecommendations);
 
 router.get("/get-posts", auth.getPosts);
 
+router.post("/post-article", auth.createPost);
+
 export default router;
