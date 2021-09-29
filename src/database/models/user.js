@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       fieldOfExpertise: DataTypes.STRING,
-      skills: { type: DataTypes.ARRAY(DataTypes.JSON) },
-      interests: { type: DataTypes.ARRAY(DataTypes.JSON) },
+      skills: { type: DataTypes.ARRAY(DataTypes.STRING) },
+      interests: { type: DataTypes.ARRAY(DataTypes.STRING) },
     },
     {}
   );

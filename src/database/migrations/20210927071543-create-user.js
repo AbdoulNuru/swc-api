@@ -27,11 +27,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       skills: {
-        type: Sequelize.ARRAY(Sequelize.JSON),
+        type: Sequelize.ARRAY(Sequelize.STRING),
         defaultValue: [],
       },
       interests: {
-        type: Sequelize.ARRAY(Sequelize.JSON),
+        type: Sequelize.ARRAY(Sequelize.STRING),
         defaultValue: [],
       },
       createdAt: {
