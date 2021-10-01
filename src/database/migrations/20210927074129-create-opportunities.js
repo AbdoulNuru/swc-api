@@ -6,6 +6,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.STRING,
       },
+      posterId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+          as: "id",
+        },
+      },
       title: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -20,7 +31,7 @@ module.exports = {
       },
       date: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

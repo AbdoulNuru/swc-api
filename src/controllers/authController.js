@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import Models from "../database/models";
 import { encode } from "../utils/jwtGenerator";
 
-const { User, Post } = Models;
+const { User, Post, Opportunities } = Models;
 
 /**
  *@description this is the function that will be used to create a new user
@@ -32,7 +32,7 @@ const Signup = async (req, res) => {
       lastName,
       email,
       password: hashedPaswword,
-      fieldOfExpertise,
+      fieldOfExpertise: fieldOfExpertise.toLowerCase(),
       skills,
       interests,
     });
@@ -256,8 +256,62 @@ const getPosts = async (req, res) => {
       status: 200,
       message: "Posts retrieved",
       data: post,
+      postCount: post.length
     });
   } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+const getUsersByFieldofExpertese = async (req, res) => {
+  try {
+    const { body: { field } } = req;
+    const expertUsers = await User.findAll({
+      where: {
+        fieldOfExpertise: {
+          [Op.like]: `%${field}%`
+        }
+      },
+      attributes: {
+        exclude: ['password']
+      }
+    });
+    return res.status(200).json({
+      status: 200,
+      message: "Users retrieved by expertise",
+      data: { expertUsers, count: expertUsers.length },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+const createOpportunity = async (req, res) => {
+  try {
+    const { body: { title, fieldNeeded, company, date, posterId } } = req;
+    const createdOpportunity = await Opportunities.create({
+      id: uuid(),
+      title,
+      fieldNeeded,
+      company,
+      posterId,
+      date,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+    return res.status(201).json({
+      status: 201,
+      message: "Opportunity created successfully",
+      data: createdOpportunity,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       error: "Internal Server Error",
@@ -274,4 +328,6 @@ export default {
   getRecommendations,
   getPosts,
   createPost,
+  getUsersByFieldofExpertese,
+  createOpportunity
 };

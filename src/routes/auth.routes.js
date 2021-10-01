@@ -43,6 +43,8 @@ router.post("/update-user", auth.updateProfile);
 
 router.get("/get-users", auth.getUsers);
 
+router.get("/get-users-by-expertise", auth.getUsersByFieldofExpertese);
+
 router.get("/get-user", auth.getUserById);
 
 router.get("/recommended-users", auth.getRecommendations);
@@ -50,5 +52,7 @@ router.get("/recommended-users", auth.getRecommendations);
 router.get("/get-posts", auth.getPosts);
 
 router.post("/post-article", auth.createPost);
+
+router.post("/new-opportunity", auth.createOpportunity);
 
 export default router;
